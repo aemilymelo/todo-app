@@ -6,6 +6,8 @@ const btnAdicionar = document.getElementById('btnAdicionar');
 const listaDeTarefas = document.getElementById('listaDeTarefas');
 const btnLimparTudo = document.getElementById('btnLimparTudo');
 const btnCarregarExterno = document.getElementById('btnCarregarExterno');
+const contadorTarefas = document.getElementById('contadorTarefas');
+
 // Array que armazenará todas as tarefas
 let tarefas = [];
 
@@ -42,7 +44,17 @@ function renderizarTarefas() {
         listaDeTarefas.innerHTML = '<li class="list-group-item text-center text-muted">Nenhuma tarefa encontrada. Adicione uma!</li>';
         return;
     }
+   const total = tarefas.length;
+const pendentes = tarefas.filter(t => !t.concluida).length;
 
+if (total === 0) {
+    listaDeTarefas.innerHTML = '<li class="list-group-item text-center text-muted">Nenhuma tarefa encontrada. Adicione uma!</li>';
+    contadorTarefas.textContent = ''; // Limpa o contador
+    return;
+}
+
+// Atualiza o texto do contador
+contadorTarefas.textContent = `Você tem ${pendentes} tarefa(s) pendente(s) de ${total} no total.`;
     tarefas.forEach((tarefa, index) => {
         const li = document.createElement('li');
         li.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -55,14 +67,16 @@ function renderizarTarefas() {
         li.innerHTML = `
             <span>${tarefa.texto}</span>
             <div>
-                <button class="btn btn-sm ${tarefa.concluida ? 'btn-warning' : 'btn-success'} me-2" 
-                        data-index="${index}" onclick="toggleConcluida(${index})">
-                    ${tarefa.concluida ? 'Reabrir' : 'Concluir'}
-                </button>
+// Botão para Concluir (Toggle) - usa ícone de checagem ou de rotação
+<button class="btn btn-sm ${tarefa.concluida ? 'btn-warning' : 'btn-success'} me-2" 
+        data-index="${index}" onclick="toggleConcluida(${index})" title="${tarefa.concluida ? 'Reabrir Tarefa' : 'Marcar como Concluída'}">
+    <i class="bi ${tarefa.concluida ? 'bi-arrow-counterclockwise' : 'bi-check-lg'}"></i>
+</button>
                 
-                <button class="btn btn-sm btn-danger" data-index="${index}" onclick="excluirTarefa(${index})">
-                    Excluir
-                </button>
+// Botão para Excluir - usa ícone de lixeira
+<button class="btn btn-sm btn-danger" data-index="${index}" onclick="excluirTarefa(${index})" title="Excluir Tarefa">
+    <i class="bi bi-trash-fill"></i>
+</button>
             </div>
         `;
         listaDeTarefas.appendChild(li);

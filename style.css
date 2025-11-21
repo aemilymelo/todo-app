@@ -1,24 +1,60 @@
-/* style.css */
+/* style.css - Versão Profissional */
+
 body {
-    padding-bottom: 50px; /* Garante espaço no final da página */
+    /* Usa uma fonte mais agradável (Se não tiver Poppins, usa sans-serif padrão) */
+    font-family: 'Poppins', sans-serif; 
+    background-color: #f4f7f6; /* Cor de fundo suave */
+    padding-top: 30px;
+    padding-bottom: 50px;
 }
 
 #app {
-    max-width: 600px; /* Limita a largura máxima do container */
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    max-width: 600px;
+    padding: 30px; /* Aumenta o padding interno */
+    background-color: #ffffff;
+    /* Sombra mais suave e moderna */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
+    border-radius: 12px; /* Cantos mais arredondados */
 }
 
-/* Estilo para tarefas concluídas */
+h1 {
+    color: #343a40; /* Título mais escuro e profissional */
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* Estilização da Lista */
+.list-group-item {
+    border: none; /* Remove a borda padrão do Bootstrap */
+    border-bottom: 1px solid #eee; /* Adiciona uma linha divisória suave */
+    padding: 15px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.list-group-item:last-child {
+    border-bottom: none;
+}
+
+/* Efeito ao passar o mouse */
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+/* Estilo para tarefas concluídas (mais sutil) */
 .tarefa-concluida {
     text-decoration: line-through;
-    color: #6c757d; /* Cinza */
+    color: #adb5bd; /* Cinza mais claro */
+    font-style: italic;
 }
 
-/* Estilo para a caixa de input (para acessibilidade visual) */
+/* Estilo para a caixa de input e botão (já estão bons com Bootstrap, mas reforçamos o foco) */
 .input-group input:focus {
-    border-color: #0d6efd; /* Azul primário do Bootstrap */
+    border-color: #0d6efd;
     box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Ajuste nos botões para reduzir o tamanho */
+.list-group-item .btn-sm {
+    padding: 4px 8px;
+    font-size: 0.75rem;
 }
