@@ -5,7 +5,7 @@ const inputNovaTarefa = document.getElementById('inputNovaTarefa');
 const btnAdicionar = document.getElementById('btnAdicionar');
 const listaDeTarefas = document.getElementById('listaDeTarefas');
 const btnLimparTudo = document.getElementById('btnLimparTudo');
-
+const btnCarregarExterno = document.getElementById('btnCarregarExterno');
 // Array que armazenará todas as tarefas
 let tarefas = [];
 
@@ -110,7 +110,45 @@ function limparTudo() {
         renderizarTarefas();
     }
 }
+// Função para carregar tarefas de um Web Service (Issue #5)
+async function carregarTarefasExternas() {
+    try {
+        // 1. Faz a requisição HTTP (consumo do Web Service)
+        const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=5');
 
+        if (!response.ok) {
+            // Checa se a resposta HTTP é OK (status 200)
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+
+        // 2. Converte a resposta para um objeto JavaScript (JSON)
+        const dadosExternos = await response.json();
+
+        // 3. Processa os dados e adiciona às tarefas existentes
+        dadosExternos.forEach(item => {
+            // Adiciona a tarefa se ela ainda não existir na lista
+            const textoTarefa = `[API] ${item.title}`;
+
+            // Evita duplicatas ao carregar
+            const jaExiste = tarefas.some(t => t.texto === textoTarefa);
+
+            if (!jaExiste) {
+                tarefas.push({
+                    texto: textoTarefa,
+                    concluida: item.completed // Usa o status 'completed' da API
+                });
+            }
+        });
+
+        salvarTarefas(); // Salva a lista atualizada no Local Storage
+        renderizarTarefas(); // Atualiza a interface
+        alert('5 tarefas de exemplo carregadas com sucesso via Web Service!');
+
+    } catch (error) {
+        console.error('Falha ao carregar tarefas externas:', error);
+        alert('Não foi possível carregar as tarefas externas. Verifique a conexão.');
+    }
+}
 // ===================================================
 // CONFIGURAÇÃO DE EVENTOS E INICIALIZAÇÃO
 // ===================================================
@@ -118,7 +156,7 @@ function limparTudo() {
 // Configuração dos Eventos (Event Listeners)
 btnAdicionar.addEventListener('click', adicionarTarefa);
 btnLimparTudo.addEventListener('click', limparTudo);
-
+btnCarregarExterno.addEventListener('click', carregarTarefasExternas);
 // Permite adicionar a tarefa pressionando a tecla 'Enter'
 inputNovaTarefa.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
@@ -126,5 +164,22 @@ inputNovaTarefa.addEventListener('keypress', (e) => {
     }
 });
 
+// ===================================================
+// REGISTRO DO SERVICE WORKER (PWA - Issue #6)
+// ===================================================
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker registrado com sucesso:', registration.scope);
+            })
+            .catch(err => {
+                console.log('Falha no registro do Service Worker:', err);
+            });
+    });
+}
+
 // Inicia a aplicação carregando os dados salvos
 carregarTarefas();
+
