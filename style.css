@@ -1,0 +1,24 @@
+/* style.css */
+body {
+    padding-bottom: 50px; /* Garante espaço no final da página */
+}
+
+#app {
+    max-width: 600px; /* Limita a largura máxima do container */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Estilo para tarefas concluídas */
+.tarefa-concluida {
+    text-decoration: line-through;
+    color: #6c757d; /* Cinza */
+}
+
+/* Estilo para a caixa de input (para acessibilidade visual) */
+.input-group input:focus {
+    border-color: #0d6efd; /* Azul primário do Bootstrap */
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
